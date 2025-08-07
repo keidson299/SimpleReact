@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import styles from "./Button.module.css";
 
 interface ButtonProps {
   color?: "primary" | "secondary" | "danger";
@@ -9,12 +9,12 @@ const Button = ({ onButtonClick, color = "primary" }: ButtonProps) => {
   return (
     <button
       type="button"
-      className={"btn btn-" + color}
+      className={[styles.btn, styles["btn-" + color]].join(" ")}
       onClick={() => {
         onButtonClick();
       }}
     >
-      Alert Button
+      ALERT BUTTON
     </button>
   );
 };

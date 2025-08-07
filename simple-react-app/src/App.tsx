@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Alert from "./components/Alert";
-import Button from "./components/Button";
+import Button from "./components/Button/Button";
 import ListGroup from "./components/ListGroup";
+import Like from "./components/Like";
 
 function App() {
   let items = [
@@ -13,6 +14,7 @@ function App() {
     "Bangkok",
     "Sao Paulo",
   ];
+
   const [alertVisible, setAlertVisibility] = useState(false);
 
   const handleSelectItem = (item: string) => {
@@ -30,6 +32,7 @@ function App() {
         heading="Cities"
         onSelectItem={handleSelectItem}
       />
+      <Like onLikeClick={() => console.log("clicked")} />
     </div>
   );
 }
