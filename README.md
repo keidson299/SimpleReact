@@ -1,3 +1,3 @@
 # SimpleReact
 
-A basic react app to get used to the process of React development with github and copilot
+A basic react app to experiment with various React components, states, and other concepts, as well as retain familiarity with github and copilot
