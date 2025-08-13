@@ -6,6 +6,7 @@ import Like from "./components/Like";
 import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
+import Form from "./components/Form";
 
 function App() {
   let items = [
@@ -49,9 +50,11 @@ function App() {
 
   return (
     <div>
+      <Form />
+      {/*
       <ExpandableText>Hello Everybody</ExpandableText>
 
-      {/*       <NavBar cartItemsCount={cartItems.length} />
+             <NavBar cartItemsCount={cartItems.length} />
       <Cart cartItems={cartItems} onClear={() => setCartItems([])} />
       {alertVisible && (
         <Alert onClose={() => setAlertVisibility(false)}></Alert>
