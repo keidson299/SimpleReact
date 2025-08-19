@@ -1,4 +1,5 @@
-import { useState } from "react";
+import axios, { AxiosError, CanceledError } from "axios";
+import { useEffect, useState } from "react";
 import Alert from "./components/Alert";
 import Button from "./components/Button/Button";
 import ListGroup from "./components/ListGroup";
@@ -11,6 +12,12 @@ import ExpenseList from "./expenseTracker/components/ExpenseList";
 import ExpenseFilter from "./expenseTracker/components/ExpenseFilter";
 import ExpenseForm from "./expenseTracker/components/ExpenseForm";
 import categories from "./expenseTracker/categories";
+import ProductList from "./components/ProductList";
+
+interface User {
+  id: number;
+  name: string;
+}
 
 function App() {
   /*   let items = [
@@ -50,7 +57,7 @@ function App() {
         item.id === 1 ? { ...item, quantity: 2 } : item
       ),
     });
-  }; */
+  };
 
   const [expenses, setExpenses] = useState([
     { id: 1, description: "aaa", amount: 10, category: "Utilities" },
@@ -65,8 +72,56 @@ function App() {
     ? expenses.filter((e) => e.category === selectedCategory)
     : expenses;
 
+  const [category, setCategory] = useState(""); */
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    // const fetchUsers = async () => {
+    //   try {
+    //     const res = await axios.get<User[]>(
+    //       "https://jsonplaceholder.typicode.com/users"
+    //     );
+    //     setUsers(res.data);
+    //   } catch (err) {
+    //     setError((err as AxiosError).message);
+    //   }
+    // };
+    // fetchUsers();
+    const controller = new AbortController();
+
+    axios
+      .get<User[]>("https://jsonplaceholder.typicode.com/users", {
+        signal: controller.signal,
+      })
+      .then((res) => setUsers(res.data))
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+        setError(err.message);
+      });
+
+    return () => controller.abort();
+  }, []);
+
   return (
     <div>
+      {error && <p className="text-danger">{error}</p>}
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+      {/*
+      <select
+        className="form-select"
+        onChange={(event) => setCategory(event.target.value)}
+      >
+        <option value=""></option>
+        <option value="Clothing">Clothing</option>
+        <option value="Household">Household</option>
+      </select>
+      <ProductList category={category}></ProductList>
       <div className="mb-5">
         <ExpenseForm
           onSubmit={(expense) =>
@@ -83,7 +138,7 @@ function App() {
         expenses={visibleExpenses}
         onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
       ></ExpenseList>
-      {/*<Form />
+      <Form />
       <ExpandableText>Hello Everybody</ExpandableText>
 
              <NavBar cartItemsCount={cartItems.length} />
